@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Stk Floating Dialogue</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="business_number">business_number</string>
+    <string name="account_number">account_number</string>
+    <string name="amount_to_pay">amount_to_pay</string>
+    <string name="not_yet_implemented">Not yet implemented</string>
+    <string name="press_back_again_quit">Press Back again to quit.</string>
+</resources>
