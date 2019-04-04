@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -21,10 +22,12 @@ public class SystemAlertWindowService extends Service {
     View systemAlertView;
 
     public SystemAlertWindowService() {
+        Log.e("Service", "SystemAlertWindowService");
     }
 
     @Override
     public IBinder onBind(Intent intent) {
+        Log.e("Service", "onBind");
         throw new UnsupportedOperationException(getString(R.string.not_yet_implemented));
     }
 
@@ -34,7 +37,7 @@ public class SystemAlertWindowService extends Service {
     }
 
     @Override
-    public void onStart(Intent intent, int startId) {
+    public int onStartCommand(Intent intent, int flags, int startId) {
         try {
 
             String business_number = "Business No.: ";
@@ -46,8 +49,8 @@ public class SystemAlertWindowService extends Service {
             amount_to_pay += intent.getStringExtra(getString(R.string.amount_to_pay));
 
             WindowManager.LayoutParams params = new WindowManager.LayoutParams(
-                    400, 130, 200, 0,
-                    WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
+                    400, 230, 230, 0,
+                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                             | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
                             | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
@@ -82,6 +85,8 @@ public class SystemAlertWindowService extends Service {
         }catch(Exception e){
             e.printStackTrace();
         }
+
+        return START_STICKY;
     }
 
     @Override
