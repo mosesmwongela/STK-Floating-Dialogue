@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/StkFloatingDialogue.iml" filepath="$PROJECT_DIR$/StkFloatingDialogue.iml" />
+      <module fileurl="file://$PROJECT_DIR$/STK-Floating-Dialogue.iml" filepath="$PROJECT_DIR$/STK-Floating-Dialogue.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
