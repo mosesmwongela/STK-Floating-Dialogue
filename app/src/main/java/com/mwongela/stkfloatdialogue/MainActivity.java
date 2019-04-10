@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -24,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     private String account_number = "654321";
     private String amount_to_pay = "310";
     private Button btn_showStk;
+    private TextView txt_grantPermission;
+    private Button btn_grantPermission;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
 
         btn_showStk = (Button) findViewById(R.id.btn_showStk);
+        txt_grantPermission = (TextView) findViewById(R.id.txt_grantPermission);
+        btn_grantPermission = (Button) findViewById(R.id.btn_grantPermission);
+
         assert btn_showStk != null;
         btn_showStk.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,12 +53,35 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        assert btn_grantPermission != null;
+        btn_grantPermission.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkPermission();
+            }
+        });
+
+        btn_showStk.setEnabled(false);
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            checkPermission();
+        }else{
+            btn_showStk.setEnabled(true);
+            txt_grantPermission.setVisibility(View.GONE);
+            btn_grantPermission.setVisibility(View.GONE);
+        }
+    }
+
+    public void checkPermission(){
         if (Build.VERSION.SDK_INT >= 23) {
             if (!Settings.canDrawOverlays(this)) {
-                btn_showStk.setEnabled(false);
                 Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                         Uri.parse("package:" + getPackageName()));
                 startActivityForResult(intent, 1234);
+            }else{
+                btn_showStk.setEnabled(true);
+                txt_grantPermission.setVisibility(View.GONE);
+                btn_grantPermission.setVisibility(View.GONE);
             }
         }
     }
@@ -61,7 +90,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1234) {
-            btn_showStk.setEnabled(true);
+            if (Build.VERSION.SDK_INT >= 23) {
+                if (!Settings.canDrawOverlays(this)) {
+                    btn_showStk.setEnabled(false);
+                    txt_grantPermission.setVisibility(View.VISIBLE);
+                    btn_grantPermission.setVisibility(View.VISIBLE);
+                }else{
+                    btn_showStk.setEnabled(true);
+                    txt_grantPermission.setVisibility(View.GONE);
+                    btn_grantPermission.setVisibility(View.GONE);
+                }
+            }
         }
     }
 
