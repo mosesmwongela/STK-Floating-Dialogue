@@ -3,7 +3,10 @@ package com.mwongela.stkfloatdialogue;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private String business_number = "123456";
     private String account_number = "654321";
     private String amount_to_pay = "310";
+    private Button btn_showStk;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         ab.setHomeAsUpIndicator(R.mipmap.ic_menu);
         ab.setDisplayHomeAsUpEnabled(true);
 
-        Button btn_showStk = (Button) findViewById(R.id.btn_showStk);
+        btn_showStk = (Button) findViewById(R.id.btn_showStk);
         assert btn_showStk != null;
         btn_showStk.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,6 +46,23 @@ public class MainActivity extends AppCompatActivity {
                 showSTK(business_number, account_number, amount_to_pay);
             }
         });
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (!Settings.canDrawOverlays(this)) {
+                btn_showStk.setEnabled(false);
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        Uri.parse("package:" + getPackageName()));
+                startActivityForResult(intent, 1234);
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1234) {
+            btn_showStk.setEnabled(true);
+        }
     }
 
     public void showSTK(String business_number, String account_number, String amount_to_pay){
